@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Data Capture</title>
+</head>
+<body>
+    <a href="#" id="captureLink">Open Link</a>
+
+    <script>
+        document.getElementById("captureLink").addEventListener("click", function(e) {
+            e.preventDefault();
+
+            // Gather information using JavaScript
+            const dateTime = new Date().toLocaleString();
+            const ipAddress = window.location.host; // This won't give you the client's IP address; consider a server-side approach for that.
+            const userAgent = navigator.userAgent;
+            const referringURL = document.referrer;
+            const platform = navigator.platform;
+            const operatingSystem = navigator.appVersion;
+            const gpu = 'Your GPU information'; // You may need to find a way to get this information via a third-party library or API.
+            const screenSize = `${window.screen.width} x ${window.screen.height}`;
+            const device = 'Your device information'; // You may need to find a way to get this information via a third-party library or API.
+
+            // Create an object to store the data
+            const data = {
+                dateTime,
+                ipAddress,
+                userAgent,
+                referringURL,
+                platform,
+                operatingSystem,
+                gpu,
+                screenSize,
+                device,
+            };
+
+            // Send the data to a server-side script using AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "capture.php", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Data sent successfully!");
+                }
+            };
+
+            xhr.send(JSON.stringify(data));
+        });
+    </script>
+</body>
+</html>
